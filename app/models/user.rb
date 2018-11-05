@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   has_many :orders
   has_many :items
+  has_many :addresses
 
   validates_presence_of :name, :address, :city, :state, :zip
   validates :email, presence: true, uniqueness: true
@@ -28,7 +29,7 @@ class User < ApplicationRecord
       .where("order_items.fulfilled=?", true)
       .sum("order_items.quantity")
   end
-  
+
   def total_inventory
     items.sum(:inventory)
   end
@@ -120,8 +121,8 @@ class User < ApplicationRecord
   end
 
   def self.merchant_by_speed(quantity, order)
-    select("distinct users.*, 
-      CASE 
+    select("distinct users.*,
+      CASE
         WHEN order_items.updated_at > order_items.created_at THEN coalesce(EXTRACT(EPOCH FROM order_items.updated_at) - EXTRACT(EPOCH FROM order_items.created_at),0)
         ELSE 1000000000 END as time_diff")
       .joins(:items)
@@ -139,5 +140,37 @@ class User < ApplicationRecord
 
   def self.slowest_merchants(quantity)
     merchant_by_speed(quantity, :desc)
+  end
+
+  def self.to_csv
+    attributes = %w{email}
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |user|
+        csv << attributes.map{ |attr| user.send(attr) }
+      end
+    end
+  end
+
+  def previous_buyers
+    User
+      .select('users.email')
+      .joins(:orders)
+      .joins('join order_items on orders.id=order_items.order_id')
+      .joins('join items on order_items.item_id=items.id')
+      .where('items.user_id = ? AND users.active=?', id, true)
+      .group(:id)
+      .pluck(:email)
+  end
+
+  def never_ordered(previous)
+    User
+      .select('users.email')
+      .where('users.active = ?', true )
+      .where.not(email: previous)
+      .where.not(id: id)
+      .pluck(:email)
   end
 end
