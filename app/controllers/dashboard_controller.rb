@@ -4,6 +4,7 @@ class DashboardController < ApplicationController
 
     if current_user.merchant?
       @merchant = current_user
+      @users = User.joins(:orders).where('orders.user_id = ?', @merchant.id)
       @total_items_sold = @merchant.total_items_sold
       @total_items_pcnt = 0
       if @total_items_sold && @merchant.total_inventory > 0
@@ -14,7 +15,21 @@ class DashboardController < ApplicationController
       @most_active_buyer = @merchant.top_active_user
       @biggest_order = @merchant.biggest_order
       @top_buyers = @merchant.top_buyers(3)
-      render :'merchants/show'
+      if params[:class] == 'previous'
+        previous_buyers = @merchant.previous_buyers
+        respond_to do |format|
+          format.csv { send_data previous_buyers.to_csv, filename: "users-#{Date.today}.csv" }
+        end
+      elsif params[:class] == 'new_users'
+        previous_buyers = @merchant.previous_buyers
+        non_buyers = @merchant.never_ordered(previous_buyers)
+        respond_to do |format|
+          format.html
+          format.csv { send_data non_buyers.to_csv, filename: "users-#{Date.today}.csv" }
+        end
+      else
+        render :'merchants/show'
+      end
     elsif current_admin?
       @top_3_shipping_states = Order.top_shipping(:state, 3)
       @top_3_shipping_cities = Order.top_shipping(:city, 3)
