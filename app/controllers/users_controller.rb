@@ -8,6 +8,7 @@ class UsersController < ApplicationController
     if request.fullpath == '/profile'
       render file: 'errors/not_found', status: 404 unless current_user
       @user = current_user
+      @addresses = @user.addresses
     else # '/users/:id
       if current_admin?
         @user = User.find(params[:id])

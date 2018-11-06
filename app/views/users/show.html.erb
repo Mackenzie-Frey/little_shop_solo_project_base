@@ -1,5 +1,5 @@
 <h1>
-  Welcome, 
+  Welcome,
     <%= @user.name if current_user == @user %>
     <%= @user.name if current_admin? %>
 </h1>
@@ -17,6 +17,16 @@
   <p><%= link_to "Edit Profile Data", current_admin? ? edit_user_path(@user) : profile_edit_path %></p>
 </div>
 
+<% if @addresses != nil %>
+  <%= @addresses.each do |address| %>
+    Address name: <%= address.name %><br>
+    Street: <%= address.street_address %><br>
+    City: <%= address.city %><br>
+    State: <%= address.state %><br>
+    Zip: <%= address.zip %> <br>
+  <% end %>
+<% end %>
+
 <% unless @user.orders.empty? %>
   <p><%= link_to "View Personal Orders", current_admin? ? user_orders_path(@user) : profile_orders_path %>
 <% end %>
@@ -27,5 +37,5 @@
   <% else %>
   <%= button_to "Enable", user_path(@user), method: :patch, params: { toggle: :enable } %>
   <% end %>
-  <%= button_to "Upgrade to Merchant", user_path(@user), method: :patch, params: { toggle: :role } %> 
+  <%= button_to "Upgrade to Merchant", user_path(@user), method: :patch, params: { toggle: :role } %>
 <% end %>
