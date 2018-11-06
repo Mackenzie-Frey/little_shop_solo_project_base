@@ -5,10 +5,29 @@ class User < ApplicationRecord
   has_many :items
   has_many :addresses
 
-  validates_presence_of :name, :address, :city, :state, :zip
+  validates_presence_of :name
   validates :email, presence: true, uniqueness: true
 
   enum role: %w(user merchant admin)
+
+  def default_address
+    Address.find(self.default_address_id)
+  end
+
+  def active_with_default_first
+    if default_address.nil?
+      self.addresses
+    else
+      all_addresses = self.addresses.all
+      all_addresses -= [default_address]
+      all_addresses.unshift(default_address)
+      all_addresses
+    end
+  end
+
+  def active_addresses
+    self.addresses.where(active: true)
+  end
 
   def merchant_orders(status=nil)
     if status.nil?

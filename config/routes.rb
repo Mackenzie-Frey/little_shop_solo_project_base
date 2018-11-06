@@ -40,7 +40,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :addresses, only: [:new, :create, :update]
+  resources :addresses, only: [:new, :create, :update, :edit]
 
   resources :carts, path: '/cart', only: [:index]
   delete '/cart', to: 'carts#empty'

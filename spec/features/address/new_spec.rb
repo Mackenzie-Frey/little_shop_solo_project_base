@@ -17,6 +17,6 @@ describe 'as a user' do
 
     click_on 'Save Address'
 
-    expect(current_path).to eq(user_path(@user))
+    expect(current_path).to eq(profile_path)
   end
 end
