@@ -4,7 +4,20 @@
 
 <p>
 <%= @user.name %><br/>
-<%= @user.email %>
+<%= @user.email %><br>
+<br> Shipping Address: <br>
+<%= form_for @order do |f| %>
+  <% current_user.active_addresses.each do |address| %>
+    <strong><%= f.label address.name %></strong>
+    <%= f.label address.street_address %>
+    <%= f.label address.state %>
+    <%= f.label address.zip %>
+    <%= f.radio_button :address_id, address.id %><br>
+  <% end %>
+  <% if @order.status == 'pending' %>
+    <%= f.submit'Change Address' %>
+  <% end %>
+<% end %>
 </p>
 
 <p>Order Details</p>

@@ -1,0 +1,9 @@
+<h1> All Addresses </h1>
+
+<% @addresses.each do |address| %>
+  <strong><%= address.name %><br></strong>
+  <%= address.street_address %><br>
+  <%= address.city %><br>
+  <%= address.state %><br>
+  <%= address.zip %><br><br>
+<% end %>

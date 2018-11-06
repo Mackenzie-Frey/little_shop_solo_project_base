@@ -38,6 +38,11 @@ class OrdersController < ApplicationController
   end
 
   def update
+    if params[:order]
+      order = Order.find(params[:id])
+      order.update(address_id: params[:order][:address_id])
+    else
+
     user = User.find(params[:user_id])
     render file: 'errors/not_found', status: 404 unless current_admin? || current_user == user
     order = Order.find(params[:id])
@@ -56,12 +61,15 @@ class OrdersController < ApplicationController
         order.update(status: :cancelled)
       end
     end
+    end
     redirect_to current_admin? ? user_orders_path(user) : profile_orders_path
   end
+
 
   def show
     @order = Order.find(params[:id])
     render file: 'errors/not_found', status: 404 unless current_user || current_user.user? && current_user == @order.user || current_user.merchant? && current_user.merchant_for_order(@order) || current_admin?
     @user = @order.user
+    @address = @user.addresses.find(@order.address_id)
   end
 end

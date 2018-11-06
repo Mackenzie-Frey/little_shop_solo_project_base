@@ -13,16 +13,19 @@
   <p><%= link_to "Edit Profile Data", current_admin? ? edit_user_path(@user) : profile_edit_path %></p>
 </div>
 
-<%= link_to 'Add address', new_address_path %>
+<%= link_to 'Add address', new_address_path %><br><br>
+
 
 <% if @addresses != nil %>
   <% @addresses.each do |address| %>
-    Address name: <%= address.name %><br>
+    Nickname: <%= address.name %><br>
     Street: <%= address.street_address %><br>
     City: <%= address.city %><br>
     State: <%= address.state %><br>
     Zip: <%= address.zip %> <br>
-    <%= button_to 'edit', edit_address_path(address), method: :get %>
+    Active: <%= address.active %> <br>
+    <%= button_to 'edit', edit_address_path(address), method: :get %> <br>
+
   <% end %>
 <% end %>
 

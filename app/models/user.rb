@@ -16,9 +16,9 @@ class User < ApplicationRecord
 
   def active_with_default_first
     if default_address.nil?
-      self.addresses
+      self.addresses.where(active: true)
     else
-      all_addresses = self.addresses.all
+      all_addresses = self.addresses.where(active: true)
       all_addresses -= [default_address]
       all_addresses.unshift(default_address)
       all_addresses

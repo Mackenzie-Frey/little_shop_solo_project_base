@@ -46,7 +46,7 @@
   <% else %>
     <%= form_for @order do |f| %>
       <% current_user.active_with_default_first.each do |address| %>
-        <%= f.label address.name %>
+        <strong><%= f.label address.name %></strong>
         <%= f.label address.street_address %>
         <%= f.radio_button :address_id, address.id %><br>
       <% end %>

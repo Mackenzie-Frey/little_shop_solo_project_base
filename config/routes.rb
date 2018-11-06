@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     resources :items, only: [:index]
   end
 
-  resources :orders, only: [:index, :show, :create] do
+  resources :orders, only: [:index, :show, :create, :update, :edit] do
     patch ':order_item_id/fulfill', to: 'order_items#update', as: 'item_fulfill'
   end
   resources :order_items, only: [:update]
@@ -40,7 +40,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :addresses, only: [:new, :create, :update, :edit]
+  resources :addresses, only: [:new, :create, :update, :edit, :index]
 
   resources :carts, path: '/cart', only: [:index]
   delete '/cart', to: 'carts#empty'

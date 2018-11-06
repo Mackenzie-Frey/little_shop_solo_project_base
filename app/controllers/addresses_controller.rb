@@ -22,9 +22,13 @@ class AddressesController < ApplicationController
     redirect_to profile_path
   end
 
+  def index
+    @addresses = current_user.addresses.where(active: true)
+  end
+
   private
     def address_params
-      params.require(:address).permit(:name, :street_address, :city, :state, :zip)
+      params.require(:address).permit(:name, :street_address, :city, :state, :zip, :active)
     end
 
     def set_default_address(address)
