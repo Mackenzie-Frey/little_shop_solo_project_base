@@ -16,6 +16,8 @@ RSpec.describe User, type: :model do
   describe 'Class Methods' do
     it '.top_merchants(quantity)' do
       user = create(:user)
+      address = create(:address, user: user)
+
       merchant_1, merchant_2, merchant_3, merchant_4 = create_list(:merchant, 4)
       item_1 = create(:item, user: merchant_1)
       item_2 = create(:item, user: merchant_2)
@@ -38,6 +40,8 @@ RSpec.describe User, type: :model do
     end
     it '.popular_merchants(quantity)' do
       user = create(:user)
+      address = create(:address, user: user)
+
       merchant_1, merchant_2, merchant_3, merchant_4 = create_list(:merchant, 4)
       item_1 = create(:item, user: merchant_1)
       item_2 = create(:item, user: merchant_2)
@@ -67,6 +71,8 @@ RSpec.describe User, type: :model do
     context 'merchants by speed' do
       before(:each) do
         user = create(:user)
+        address = create(:address, user: user)
+
         @merchant_1, @merchant_2, @merchant_3, @merchant_4 = create_list(:merchant, 4)
         item_1 = create(:item, user: @merchant_1)
         item_2 = create(:item, user: @merchant_2)
@@ -91,6 +97,8 @@ RSpec.describe User, type: :model do
   describe 'Instance Methods' do
     it '.merchant_items' do
       user = create(:user)
+      address = create(:address, user: user)
+
       merchant = create(:merchant)
       item_1, item_2, item_3, item_4, item_5 = create_list(:item, 5, user: merchant)
 
@@ -106,6 +114,8 @@ RSpec.describe User, type: :model do
     end
     it '.merchant_items(:pending)' do
       user = create(:user)
+      address = create(:address, user: user)
+
       merchant = create(:merchant)
       item_1, item_2, item_3, item_4, item_5 = create_list(:item, 5, user: merchant)
 
@@ -121,6 +131,8 @@ RSpec.describe User, type: :model do
     end
     it '.merchant_for_order(order)' do
       user = create(:user)
+      address = create(:address, user: user)
+
       merchant_1, merchant_2 = create_list(:merchant, 2)
       item_1, item_2 = create_list(:item, 5, user: merchant_1)
       item_3, item_4 = create_list(:item, 5, user: merchant_2)
@@ -138,6 +150,8 @@ RSpec.describe User, type: :model do
     end
     it '.total_items_sold' do
       user = create(:user)
+      address = create(:address, user: user)
+
       merchant_1, merchant_2 = create_list(:merchant, 2)
       item_1, item_2 = create_list(:item, 5, user: merchant_1)
       item_3, item_4 = create_list(:item, 5, user: merchant_2)
@@ -160,10 +174,18 @@ RSpec.describe User, type: :model do
       expect(merchant.total_inventory).to eq(item_1.inventory + item_2.inventory)
     end
     it '.top_3_shipping_states' do
-      user_1 = create(:user, state: 'CO')
-      user_2 = create(:user, state: 'CA')
-      user_3 = create(:user, state: 'FL')
-      user_4 = create(:user, state: 'NY')
+      user_1 = create(:user)
+      address_1 = create(:address, user: user_1, state: 'CO')
+
+      user_2 = create(:user)
+      address_2 = create(:address, user: user_2, state: 'CA')
+
+      user_3 = create(:user)
+      address_3 = create(:address, user: user_3, state: 'FL')
+
+      user_4 = create(:user)
+      address_4 = create(:address, user: user_4, state: 'NY')
+
 
       merchant = create(:merchant)
       item_1 = create(:item, user: merchant)
@@ -196,10 +218,17 @@ RSpec.describe User, type: :model do
       expect(merchant.top_3_shipping_states).to eq(['CO', 'CA', 'NY'])
     end
     it '.top_3_shipping_cities' do
-      user_1 = create(:user, city: 'Denver')
-      user_2 = create(:user, city: 'Houston')
-      user_3 = create(:user, city: 'Ottawa')
-      user_4 = create(:user, city: 'NYC')
+      user_1 = create(:user)
+      address_1 = create(:address, user: user_1, city: 'Denver')
+
+      user_2 = create(:user)
+      address_2 = create(:address, user: user_2, city: 'Houston')
+
+      user_3 = create(:user)
+      address_3 = create(:address, user: user_3, city: 'Ottawa')
+
+      user_4 = create(:user)
+      address_4 = create(:address, user: user_4, city: 'NYC')
 
       merchant = create(:merchant)
       item_1 = create(:item, user: merchant)
@@ -232,8 +261,12 @@ RSpec.describe User, type: :model do
       expect(merchant.top_3_shipping_cities).to eq(['Houston', 'Denver', 'NYC'])
     end
     it '.top_active_user' do
-      user_1 = create(:user, city: 'Denver')
-      user_2 = create(:user, city: 'Houston')
+      user_1 = create(:user)
+      address = create(:address, user: user_1, city: 'Denver')
+
+      user_2 = create(:user)
+      address_2 = create(:address, user: user_2, city: 'Houston')
+
       merchant = create(:merchant)
       item_1 = create(:item, user: merchant)
 
@@ -251,8 +284,12 @@ RSpec.describe User, type: :model do
       expect(merchant.top_active_user).to eq(user_1)
     end
     it '.biggest_order' do
-      user_1 = create(:user, city: 'Denver')
-      user_2 = create(:user, city: 'Houston')
+      user_1 = create(:user)
+      address = create(:address, user: user_1, city: 'Denver')
+
+      user_2 = create(:user)
+      address_2 = create(:address, user: user_2, city: 'Houston')
+
       merchant_1, merchant_2 = create_list(:merchant, 2)
       item_1 = create(:item, user: merchant_1)
       item_2 = create(:item, user: merchant_2)
@@ -272,9 +309,15 @@ RSpec.describe User, type: :model do
       expect(merchant_1.biggest_order).to eq(order_1)
     end
     it '.top_buyers(3)' do
-      user_1 = create(:user, city: 'Denver')
-      user_2 = create(:user, city: 'Houston')
+      user_1 = create(:user)
+      address_1 = create(:address, user: user_1, city: 'Denver')
+
+      user_2 = create(:user)
+      address_2 = create(:address, user: user_2, city: 'Houston')
+
       user_3 = create(:user, city: 'Atlanta')
+      address_3 = create(:address, user: user_3, city: 'Atlanta')
+
       merchant_1, merchant_2 = create_list(:merchant, 2)
       item_1 = create(:item, user: merchant_1)
       item_2 = create(:item, user: merchant_2)
@@ -298,9 +341,14 @@ RSpec.describe User, type: :model do
     it '.previous_buyers' do
       admin = create(:admin)
       user = create(:user)
+      address = create(:address, user: user)
+
       merchant_1, merchant_2 = create_list(:merchant, 2)
       user_2 = create(:user, active: false)
+      address_2 = create(:address, user: user_2)
+
       user_3 = create(:user)
+      address_3 = create(:address, user: user_3)
 
       item_1 = create(:item, user: merchant_1)
       item_2 = create(:item, user: merchant_2)
@@ -327,9 +375,15 @@ RSpec.describe User, type: :model do
     it '.never_ordered' do
       admin = create(:admin)
       user = create(:user)
+      address = create(:address, user: user)
+
       merchant_1, merchant_2 = create_list(:merchant, 2)
       user_2 = create(:user, active: false)
+      address_2 = create(:address, user: user_2)
+
       user_3 = create(:user)
+      address_3 = create(:address, user: user_3)
+
 
       item_1 = create(:item, user: merchant_1)
       item_2 = create(:item, user: merchant_2)

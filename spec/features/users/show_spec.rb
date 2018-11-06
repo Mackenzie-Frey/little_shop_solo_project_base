@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe 'User Show Page, aka Profile Page' do
   before(:each) do
     @user = create(:user)
+    @address = create(:address, user: @user)
+
   end
   context 'As the user themselves' do
     it 'should show all user data to themselves' do
@@ -12,10 +14,6 @@ RSpec.describe 'User Show Page, aka Profile Page' do
       within '.profile-data' do
         expect(page).to have_content(@user.email)
         expect(page).to have_content(@user.name)
-        expect(page).to have_content(@user.address)
-        expect(page).to have_content(@user.city)
-        expect(page).to have_content(@user.state)
-        expect(page).to have_content(@user.zip)
 
         click_link "Edit Profile Data"
         expect(current_path).to eq(profile_edit_path)
@@ -63,10 +61,6 @@ RSpec.describe 'User Show Page, aka Profile Page' do
       within '.profile-data' do
         expect(page).to have_content(@user.email)
         expect(page).to have_content(@user.name)
-        expect(page).to have_content(@user.address)
-        expect(page).to have_content(@user.city)
-        expect(page).to have_content(@user.state)
-        expect(page).to have_content(@user.zip)
 
         click_link "Edit Profile Data"
         expect(current_path).to eq(edit_user_path(@user))
