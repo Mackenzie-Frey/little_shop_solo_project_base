@@ -384,7 +384,6 @@ RSpec.describe User, type: :model do
       user_3 = create(:user)
       address_3 = create(:address, user: user_3)
 
-
       item_1 = create(:item, user: merchant_1)
       item_2 = create(:item, user: merchant_2)
 
@@ -403,6 +402,34 @@ RSpec.describe User, type: :model do
       expect(merchant_1.never_ordered(previous)).to eq([admin.email, merchant_2.email, user_3.email])
       expect(merchant_1.never_ordered(previous)).to_not include(user.email)
       expect(merchant_1.never_ordered(previous)).to_not include(user_2.email)
+    end
+
+    it '.default_address' do
+      user = create(:user)
+      address = create(:address, user: user)
+      user.default_address_id = address.id
+
+      expect(user.default_address).to eq(address)
+    end
+
+    it '.active_with_default_first' do
+      user = create(:user)
+      address_1 = create(:address, user: user)
+      address_2 = create(:address, user: user, active: false)
+      address_3 = create(:address, user: user)
+      user.default_address_id = address_3.id
+
+      expect(user.active_with_default_first).to eq([address_3, address_1])
+    end
+
+    it '.active_addresses' do
+      user = create(:user)
+      address_1 = create(:address, user: user)
+      address_2 = create(:address, user: user, active: false)
+      address_3 = create(:address, user: user)
+      user.default_address_id = address_1.id
+
+      expect(user.active_with_default_first).to eq([address_1, address_3])
     end
   end
 end
