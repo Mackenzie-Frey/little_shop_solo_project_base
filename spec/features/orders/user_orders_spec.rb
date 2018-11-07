@@ -15,19 +15,19 @@ RSpec.describe 'User Order pages' do
         @merchant = create(:merchant)
         @item_1, @item_2, @item_3, @item_4, @item_5 = create_list(:item, 5, user: @merchant)
 
-        @order_1 = create(:order, user: @user)
+        @order_1 = create(:order, user: @user, address_id: @address.id)
         create(:order_item, order: @order_1, item: @item_1)
         create(:order_item, order: @order_1, item: @item_2)
 
-        @order_2 = create(:completed_order, user: @user)
+        @order_2 = create(:completed_order, user: @user, address_id: @address.id)
         create(:fulfilled_order_item, order: @order_2, item: @item_2)
         create(:fulfilled_order_item, order: @order_2, item: @item_3)
 
-        @order_3 = create(:cancelled_order, user: @user)
+        @order_3 = create(:cancelled_order, user: @user, address_id: @address.id)
         create(:order_item, order: @order_3, item: @item_3)
         create(:order_item, order: @order_3, item: @item_4)
 
-        @order_4 = create(:disabled_order, user: @user)
+        @order_4 = create(:disabled_order, user: @user, address_id: @address.id)
         create(:order_item, order: @order_4, item: @item_1)
         create(:order_item, order: @order_4, item: @item_3)
 
@@ -73,11 +73,11 @@ RSpec.describe 'User Order pages' do
       merchant = create(:merchant)
       @item_1, @item_2, @item_3, @item_4, @item_5 = create_list(:item, 5, user: merchant)
 
-      @order_1 = create(:order, user: @user)
+      @order_1 = create(:order, user: @user, address_id: @address.id)
       create(:order_item, order: @order_1, item: @item_1)
       create(:order_item, order: @order_1, item: @item_2)
 
-      @order_2 = create(:disabled_order, user: @user)
+      @order_2 = create(:disabled_order, user: @user, address_id: @address.id)
       create(:order_item, order: @order_2, item: @item_3)
 
       visit orders_path

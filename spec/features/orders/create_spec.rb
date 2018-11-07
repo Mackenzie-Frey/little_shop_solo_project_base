@@ -8,6 +8,7 @@ RSpec.describe 'Create Order' do
       inactive_item = create(:inactive_item, name: 'inactive item 1')
       user = create(:user)
       address = create(:address, user: user)
+      user.default_address_id = address.id
 
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
 
@@ -38,7 +39,7 @@ RSpec.describe 'Create Order' do
 
       item_1, item_2 = create_list(:item, 2, user: merchant)
 
-      order_1 = create(:order, user: user)
+      order_1 = create(:order, user: user, address_id: address.id)
       create(:order_item, order: order_1, item: item_1)
       create(:order_item, order: order_1, item: item_2)
 
@@ -63,7 +64,7 @@ RSpec.describe 'Create Order' do
       address = create(:address, user: user)
 
       item_1 = create(:item, user: merchant)
-      order_1 = create(:order, user: user)
+      order_1 = create(:order, user: user, address_id: address.id)
       oi_1 = create(:order_item, order: order_1, item: item_1)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant)
 
@@ -89,7 +90,7 @@ RSpec.describe 'Create Order' do
 
       item_1, item_2 = create_list(:item, 2, user: merchant)
 
-      order_1 = create(:order, user: user)
+      order_1 = create(:order, user: user, address_id: address.id)
       oi_1 = create(:order_item, order: order_1, item: item_1)
       create(:order_item, order: order_1, item: item_2)
 

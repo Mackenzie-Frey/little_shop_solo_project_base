@@ -9,6 +9,7 @@ RSpec.describe 'Items Index' do
       @inactive_item = create(:inactive_item, name: 'inactive item 1')
       @user = create(:user)
       @address = create(:address, user: @user)
+      @user.default_address_id = @address.id
 
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
     end
@@ -159,6 +160,9 @@ RSpec.describe 'Items Index' do
   context 'as a visitor' do
     it 'should tell me to login/register if I am a visitor' do
       @merchant = create(:merchant)
+      address = create(:address, user: @merchant)
+      @merchant.default_address_id = address.id
+
       FactoryBot.reload
       item_1, item_2 = create_list(:item, 2, user: @merchant)
 

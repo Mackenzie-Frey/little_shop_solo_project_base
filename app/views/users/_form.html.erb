@@ -31,35 +31,7 @@
     <%= f.text_field :name %>
   </div>
 
-
-  <%= f.fields_for :hobbies do |h| %>
-  <div class="field">
-    <%= h.label 'Address Nickname' %>
-    <%= h.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= h.label :street_name %>
-    <%= h.text_field :street_name %>
-  </div>
-
-  <div class="field">
-    <%= h.label :city %>
-    <%= h.text_field :city %>
-  </div>
-
-  <div class="field">
-    <%= h.label :state %>
-    <%= h.text_field :state %>
-  </div>
-
-  <div class="field">
-    <%= h.label :zip %>
-    <%= h.text_field :zip %>
-  </div>
-
   <div class="actions">
     <%= f.submit %>
   </div>
-<% end %>
 <% end %>

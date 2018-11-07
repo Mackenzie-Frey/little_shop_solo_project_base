@@ -315,7 +315,7 @@ RSpec.describe User, type: :model do
       user_2 = create(:user)
       address_2 = create(:address, user: user_2, city: 'Houston')
 
-      user_3 = create(:user, city: 'Atlanta')
+      user_3 = create(:user)
       address_3 = create(:address, user: user_3, city: 'Atlanta')
 
       merchant_1, merchant_2 = create_list(:merchant, 2)

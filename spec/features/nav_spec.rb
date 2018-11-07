@@ -24,6 +24,7 @@ RSpec.describe 'Site Navigation' do
     it 'all links work' do
       user = create(:user)
       address = create(:address, user: user)
+      user.default_address_id = address.id
 
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
 
