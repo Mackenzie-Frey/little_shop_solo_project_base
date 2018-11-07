@@ -14,47 +14,47 @@ RSpec.describe Order, type: :model do
   describe 'Class Methods' do
     before(:each) do
       @user_1 = create(:user)
-      @address = create(:address, user: @user_1, state: 'CO')
+      @address_1 = create(:address, user: @user_1, state: 'CO')
 
       @user_2 = create(:user)
-      @address = create(:address, user: @user_2, state: 'CA')
+      @address_2 = create(:address, user: @user_2, state: 'CA')
 
       @user_3 = create(:user)
-      @address = create(:address, user: @user_3, state: 'FL')
+      @address_3 = create(:address, user: @user_3, state: 'FL')
 
       @user_4 = create(:user)
-      @address = create(:address, user: @user_4, state: 'NY')
+      @address_4 = create(:address, user: @user_4, state: 'NY')
 
 
       @merchant = create(:merchant)
       item_1 = create(:item, user: @merchant)
 
       # Colorado is 1st place
-      order = create(:completed_order, user: @user_1)
+      order = create(:completed_order, user: @user_1, address_id: @address_1.id)
       create(:fulfilled_order_item, order: order, item: item_1)
-      order = create(:completed_order, user: @user_1)
+      order = create(:completed_order, user: @user_1, address_id: @address_1.id)
       create(:fulfilled_order_item, order: order, item: item_1)
-      order = create(:completed_order, user: @user_1)
+      order = create(:completed_order, user: @user_1, address_id: @address_1.id)
       create(:fulfilled_order_item, order: order, item: item_1)
-      order = create(:completed_order, user: @user_1)
+      order = create(:completed_order, user: @user_1, address_id: @address_1.id)
       create(:fulfilled_order_item, order: order, item: item_1)
       # California is 2nd place
-      order = create(:completed_order, user: @user_2)
+      order = create(:completed_order, user: @user_2, address_id: @address_2.id)
       create(:fulfilled_order_item, order: order, item: item_1)
-      order = create(:completed_order, user: @user_2)
+      order = create(:completed_order, user: @user_2, address_id: @address_2.id)
       create(:fulfilled_order_item, order: order, item: item_1)
-      order = create(:completed_order, user: @user_2)
+      order = create(:completed_order, user: @user_2, address_id: @address_2.id)
       create(:fulfilled_order_item, order: order, item: item_1)
       # Sorry Florida
-      order = create(:completed_order, user: @user_3)
+      order = create(:completed_order, user: @user_3, address_id: @address_3.id)
       create(:fulfilled_order_item, order: order, item: item_1)
-      order = create(:completed_order, user: @user_4)
       # NY is 3rd place
+      order = create(:completed_order, user: @user_4, address_id: @address_4.id)
       create(:fulfilled_order_item, order: order, item: item_1)
-      order = create(:completed_order, user: @user_4)
+      order = create(:completed_order, user: @user_4, address_id: @address_4.id)
       create(:fulfilled_order_item, order: order, item: item_1)    end
     it '.top_shipping(:state, 3)' do
-      expect(Order.top_shipping(:state, 3)).to eq(['CO', 'CA', 'NY'])
+      expect(Order.top_shipping('state', 3)).to eq(['CO', 'CA', 'NY'])
     end
     it '.top_buyers(3)' do
       expect(Order.top_buyers(3)).to eq([@user_4, @user_2, @user_3])

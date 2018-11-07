@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe 'Merchant Orders' do
   before(:each) do
     @user = create(:user)
-    @address = create(:address, user: @user)
+    @address = create(:address, user: @user, active: true)
+    @user.default_address_id = @address.id
 
     @merchant = create(:merchant)
     @item_1, @item_2, @item_3, @item_4, @item_5 = create_list(:item, 5, user: @merchant)
@@ -57,7 +58,7 @@ RSpec.describe 'Merchant Orders' do
 
       click_on "Order #{order_1.id}"
       expect(current_path).to eq(order_path(order_1))
-
+    
       expect(page).to have_content(@user.name)
       expect(page).to have_content(@address.street_address)
       expect(page).to have_content(@address.city)

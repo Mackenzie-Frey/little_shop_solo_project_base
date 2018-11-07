@@ -22,28 +22,28 @@ RSpec.describe 'Admin Stats' do
       @item_1 = create(:item, user: @merchant_1)
 
       # Denver/Colorado is 2nd place
-      @order_1 = create(:completed_order, user: @user_1)
+      @order_1 = create(:completed_order, user: @user_1, address_id: @address_1.id)
       create(:fulfilled_order_item, order: @order_1, item: @item_1)
-      @order_2 = create(:completed_order, user: @user_1)
+      @order_2 = create(:completed_order, user: @user_1, address_id: @address_1.id)
       create(:fulfilled_order_item, order: @order_2, item: @item_1)
-      @order_3 = create(:completed_order, user: @user_1)
+      @order_3 = create(:completed_order, user: @user_1, address_id: @address_1.id)
       create(:fulfilled_order_item, order: @order_3, item: @item_1)
       # Los Angeles, California is 1st place
-      @order_4 = create(:completed_order, user: @user_2)
+      @order_4 = create(:completed_order, user: @user_2, address_id: @address_2.id)
       create(:fulfilled_order_item, order: @order_4, item: @item_1)
-      @order_5 = create(:completed_order, user: @user_2)
+      @order_5 = create(:completed_order, user: @user_2, address_id: @address_2.id)
       create(:fulfilled_order_item, order: @order_5, item: @item_1)
-      @order_6 = create(:completed_order, user: @user_2)
+      @order_6 = create(:completed_order, user: @user_2, address_id: @address_2.id)
       create(:fulfilled_order_item, order: @order_6, item: @item_1)
-      @order_7 = create(:completed_order, user: @user_2)
+      @order_7 = create(:completed_order, user: @user_2, address_id: @address_2.id)
       create(:fulfilled_order_item, order: @order_7, item: @item_1)
       # Sorry Tampa, Florida
-      @order_8 = create(:completed_order, user: @user_3)
+      @order_8 = create(:completed_order, user: @user_3, address_id: @address_3.id)
       create(:fulfilled_order_item, order: @order_8, item: @item_1)
       # NYC, NY is 3rd place
-      @order_9 = create(:completed_order, user: @user_4)
+      @order_9 = create(:completed_order, user: @user_4, address_id: @address_4.id)
       create(:fulfilled_order_item, order: @order_9, item: @item_1)
-      @order_A = create(:completed_order, user: @user_4)
+      @order_A = create(:completed_order, user: @user_4, address_id: @address_4.id)
       create(:fulfilled_order_item, order: @order_A, item: @item_1)
     end
     it 'shows top 3 states where items were shipped' do
@@ -53,7 +53,7 @@ RSpec.describe 'Admin Stats' do
 
       within '#stats' do
         within '#stats-top-states' do
-          expect(page).to have_content("Top 3 States:\n#{@user_2.state} #{@user_1.state} #{@user_4.state}")
+          expect(page).to have_content("Top 3 States:\n#{@address_2.state} #{@address_1.state} #{@address_4.state}")
         end
       end
     end
@@ -64,7 +64,7 @@ RSpec.describe 'Admin Stats' do
 
       within '#stats' do
         within '#stats-top-cities' do
-          expect(page).to have_content("Top 3 Cities:\n#{@user_2.city} #{@user_1.city} #{@user_4.city}")
+          expect(page).to have_content("Top 3 Cities:\n#{@address_2.city} #{@address_1.city} #{@address_4.city}")
         end
       end
     end
