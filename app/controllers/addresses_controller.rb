@@ -24,7 +24,7 @@ class AddressesController < ApplicationController
 
   private
     def address_params
-      params.require(:address).permit(:name, :street_address, :city, :state, :zip, :active)
+      params.require(:address).permit(:name, :street_address, :city, :state, :zip, :active, :user)
     end
 
     def set_default_address(address)

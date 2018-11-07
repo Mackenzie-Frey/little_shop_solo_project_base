@@ -5,16 +5,11 @@ describe 'as a user' do
     @user = create(:user)
     @address_1 = create(:address, user: @user)
     @user.default_address_id = @address_1.id
-
-    visit root_path
-    click_link 'Log in'
-
-    fill_in :email, with: @user.email
-    fill_in :password, with: @user.password
-    click_button 'Log in'
   end
 
   it 'can add a new address' do
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
     new_address = create(:address)
 
     visit new_address_path
@@ -36,6 +31,8 @@ describe 'as a user' do
   end
 
   it 'can change default address' do
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
     address = create(:address)
 
     visit new_address_path

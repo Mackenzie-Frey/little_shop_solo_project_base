@@ -14,7 +14,7 @@
       <img src="./assets/0.10.2/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2018-11-06T20:44:02-07:00">2018-11-06T20:44:02-07:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2018-11-07T06:42:26-07:00">2018-11-07T06:42:26-07:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -25,7 +25,7 @@
      covered at
      <span class="covered_strength">
        <span class="green">
-         3.15
+         3.07
        </span>
     </span> hits/line)
   </h2>
@@ -67,7 +67,7 @@
         <td>10</td>
         <td>10</td>
         <td>0</td>
-        <td>166.9</td>
+        <td>154.7</td>
       </tr>
       
       <tr>
@@ -167,7 +167,7 @@
         <td>19</td>
         <td>19</td>
         <td>0</td>
-        <td>7.3</td>
+        <td>6.3</td>
       </tr>
       
       <tr>
@@ -177,7 +177,7 @@
         <td>59</td>
         <td>57</td>
         <td>2</td>
-        <td>6.2</td>
+        <td>5.9</td>
       </tr>
       
       <tr>
@@ -197,7 +197,7 @@
         <td>26</td>
         <td>26</td>
         <td>0</td>
-        <td>29.8</td>
+        <td>29.0</td>
       </tr>
       
       <tr>
@@ -679,7 +679,7 @@
         <li class="covered" data-hits="3" data-linenumber="27">
           <span class="hits">3</span>
           
-          <code class="ruby">      params.require(:address).permit(:name, :street_address, :city, :state, :zip, :active)</code>
+          <code class="ruby">      params.require(:address).permit(:name, :street_address, :city, :state, :zip, :active, :user)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="28">
@@ -797,8 +797,8 @@
           <code class="ruby">  def current_user</code>
         </li>
       
-        <li class="covered" data-hits="740" data-linenumber="8">
-          <span class="hits">740</span>
+        <li class="covered" data-hits="642" data-linenumber="8">
+          <span class="hits">642</span>
           
           <code class="ruby">    @current_user_lookup ||= User.find(session[:user_id]) if session[:user_id]</code>
         </li>
@@ -821,8 +821,8 @@
           <code class="ruby">  def current_admin?</code>
         </li>
       
-        <li class="covered" data-hits="615" data-linenumber="12">
-          <span class="hits">615</span>
+        <li class="covered" data-hits="603" data-linenumber="12">
+          <span class="hits">603</span>
           
           <code class="ruby">    current_user &amp;&amp; current_user.admin?</code>
         </li>
@@ -845,8 +845,8 @@
           <code class="ruby">  def build_cart</code>
         </li>
       
-        <li class="covered" data-hits="307" data-linenumber="16">
-          <span class="hits">307</span>
+        <li class="covered" data-hits="295" data-linenumber="16">
+          <span class="hits">295</span>
           
           <code class="ruby">    @cart ||= Cart.new(session[:cart])</code>
         </li>
@@ -2901,8 +2901,8 @@
           <code class="ruby">  def new </code>
         </li>
       
-        <li class="covered" data-hits="21" data-linenumber="3">
-          <span class="hits">21</span>
+        <li class="covered" data-hits="18" data-linenumber="3">
+          <span class="hits">18</span>
           
           <code class="ruby">    if current_user</code>
         </li>
@@ -2943,32 +2943,32 @@
           <code class="ruby">  def create </code>
         </li>
       
-        <li class="covered" data-hits="19" data-linenumber="10">
-          <span class="hits">19</span>
+        <li class="covered" data-hits="16" data-linenumber="10">
+          <span class="hits">16</span>
           
           <code class="ruby">    user = User.find_by(email: params[:email])</code>
         </li>
       
-        <li class="covered" data-hits="19" data-linenumber="11">
-          <span class="hits">19</span>
+        <li class="covered" data-hits="16" data-linenumber="11">
+          <span class="hits">16</span>
           
           <code class="ruby">    if user &amp;&amp; user.authenticate(params[:password])</code>
         </li>
       
-        <li class="covered" data-hits="17" data-linenumber="12">
-          <span class="hits">17</span>
+        <li class="covered" data-hits="14" data-linenumber="12">
+          <span class="hits">14</span>
           
           <code class="ruby">      if user.active?</code>
         </li>
       
-        <li class="covered" data-hits="15" data-linenumber="13">
-          <span class="hits">15</span>
+        <li class="covered" data-hits="12" data-linenumber="13">
+          <span class="hits">12</span>
           
           <code class="ruby">        session[:user_id] = user.id</code>
         </li>
       
-        <li class="covered" data-hits="15" data-linenumber="14">
-          <span class="hits">15</span>
+        <li class="covered" data-hits="12" data-linenumber="14">
+          <span class="hits">12</span>
           
           <code class="ruby">        redirect_to profile_path</code>
         </li>
@@ -3130,32 +3130,32 @@
           <code class="ruby">  def show</code>
         </li>
       
-        <li class="covered" data-hits="34" data-linenumber="8">
-          <span class="hits">34</span>
+        <li class="covered" data-hits="31" data-linenumber="8">
+          <span class="hits">31</span>
           
           <code class="ruby">    if request.fullpath == &#39;/profile&#39;</code>
         </li>
       
-        <li class="covered" data-hits="26" data-linenumber="9">
-          <span class="hits">26</span>
+        <li class="covered" data-hits="23" data-linenumber="9">
+          <span class="hits">23</span>
           
           <code class="ruby">      render file: &#39;errors/not_found&#39;, status: 404 unless current_user</code>
         </li>
       
-        <li class="covered" data-hits="26" data-linenumber="10">
-          <span class="hits">26</span>
+        <li class="covered" data-hits="23" data-linenumber="10">
+          <span class="hits">23</span>
           
           <code class="ruby">      @user = current_user</code>
         </li>
       
-        <li class="covered" data-hits="26" data-linenumber="11">
-          <span class="hits">26</span>
+        <li class="covered" data-hits="23" data-linenumber="11">
+          <span class="hits">23</span>
           
           <code class="ruby">      if current_user</code>
         </li>
       
-        <li class="covered" data-hits="25" data-linenumber="12">
-          <span class="hits">25</span>
+        <li class="covered" data-hits="22" data-linenumber="12">
+          <span class="hits">22</span>
           
           <code class="ruby">        @addresses = @user.addresses</code>
         </li>
@@ -3798,8 +3798,8 @@
           <code class="ruby">  def initialize(initial_contents)</code>
         </li>
       
-        <li class="covered" data-hits="317" data-linenumber="5">
-          <span class="hits">317</span>
+        <li class="covered" data-hits="305" data-linenumber="5">
+          <span class="hits">305</span>
           
           <code class="ruby">    @contents = initial_contents || Hash.new(0)</code>
         </li>
@@ -3822,8 +3822,8 @@
           <code class="ruby">  def total_count</code>
         </li>
       
-        <li class="covered" data-hits="239" data-linenumber="9">
-          <span class="hits">239</span>
+        <li class="covered" data-hits="230" data-linenumber="9">
+          <span class="hits">230</span>
           
           <code class="ruby">    @contents.values.sum</code>
         </li>
