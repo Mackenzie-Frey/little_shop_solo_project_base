@@ -16,14 +16,10 @@ class AddressesController < ApplicationController
   end
 
   def update
-    @address = current_user.addresses.find(params[:id])
+    @address = Address.find(params[:id])
     @address.update(address_params)
     set_default_address(@address)
     redirect_to profile_path
-  end
-
-  def index
-    @addresses = current_user.addresses.where(active: true)
   end
 
   private
