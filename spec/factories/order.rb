@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :order do
     user
+    address_id {user.addresses.first}
     status { "pending" }
   end
   factory :completed_order, parent: :order do

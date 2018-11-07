@@ -1,5 +1,5 @@
 <h1>
-  Welcome, 
+  Welcome,
     <%= @user.name if current_user == @user %>
     <%= @user.name if current_admin? %>
 </h1>
@@ -8,14 +8,26 @@
   <table>
     <tr><td>name:</td><td><%= @user.name %></td></tr>
     <tr><td>email:</td><td><%= @user.email %></td></tr>
-    <tr><td>address:</td><td>
-      <%= @user.address %>
-      <%= @user.city %>, <%= @user.state %>
-      <%= @user.zip %></td></tr>
   </table>
 
   <p><%= link_to "Edit Profile Data", current_admin? ? edit_user_path(@user) : profile_edit_path %></p>
 </div>
+
+<%= link_to 'Add address', new_address_path %><br><br>
+
+
+<% if @addresses != nil %>
+  <% @addresses.each do |address| %>
+    Nickname: <%= address.name %><br>
+    Street: <%= address.street_address %><br>
+    City: <%= address.city %><br>
+    State: <%= address.state %><br>
+    Zip: <%= address.zip %> <br>
+    Active: <%= address.active %> <br>
+    <%= button_to 'edit', edit_address_path(address), method: :get %> <br>
+
+  <% end %>
+<% end %>
 
 <% unless @user.orders.empty? %>
   <p><%= link_to "View Personal Orders", current_admin? ? user_orders_path(@user) : profile_orders_path %>
@@ -27,5 +39,5 @@
   <% else %>
   <%= button_to "Enable", user_path(@user), method: :patch, params: { toggle: :enable } %>
   <% end %>
-  <%= button_to "Upgrade to Merchant", user_path(@user), method: :patch, params: { toggle: :role } %> 
+  <%= button_to "Upgrade to Merchant", user_path(@user), method: :patch, params: { toggle: :role } %>
 <% end %>

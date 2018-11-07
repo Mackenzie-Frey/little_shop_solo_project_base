@@ -8,6 +8,9 @@ class UsersController < ApplicationController
     if request.fullpath == '/profile'
       render file: 'errors/not_found', status: 404 unless current_user
       @user = current_user
+      if current_user
+        @addresses = @user.addresses
+      end 
     else # '/users/:id
       if current_admin?
         @user = User.find(params[:id])
@@ -22,6 +25,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    @user.addresses.build
   end
 
   def edit
@@ -95,6 +99,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation, :name, :address, :city, :state, :zip)
+      params.require(:user).permit(:user, :email, :password, :password_confirmation, address_attributes: [:name, :address, :city, :state, :zip])
     end
 end

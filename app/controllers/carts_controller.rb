@@ -3,6 +3,10 @@ class CartsController < ApplicationController
 
   def index
     @items = Item.where(id: @cart.contents.keys)
+    if current_user
+      @order = Order.new
+      @order.address_id = current_user.default_address_id
+    end 
   end
 
   def update

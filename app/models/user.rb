@@ -4,11 +4,31 @@ class User < ApplicationRecord
   has_many :orders
   has_many :items
   has_many :addresses
+  accepts_nested_attributes_for :addresses
 
-  validates_presence_of :name, :address, :city, :state, :zip
+  validates_presence_of :name
   validates :email, presence: true, uniqueness: true
 
   enum role: %w(user merchant admin)
+
+  def default_address
+    Address.find(self.default_address_id)
+  end
+
+  def active_with_default_first
+    if default_address.nil?
+      self.addresses.where(active: true)
+    else
+      all_addresses = self.addresses.where(active: true)
+      all_addresses -= [default_address]
+      all_addresses.unshift(default_address)
+      all_addresses
+    end
+  end
+
+  def active_addresses
+    self.addresses.where(active: true)
+  end
 
   def merchant_orders(status=nil)
     if status.nil?
@@ -38,20 +58,21 @@ class User < ApplicationRecord
     items
       .joins(:orders)
       .joins('join users on orders.user_id=users.id')
+      .joins('join addresses on orders.address_id=addresses.id')
       .where("orders.status != ?", :cancelled)
       .where("order_items.fulfilled=?", true)
-      .order("count(users.#{metric}) desc")
-      .group("users.#{metric}")
+      .order("count(addresses.#{metric}) desc")
+      .group("addresses.#{metric}")
       .limit(quantity)
-      .pluck("users.#{metric}")
+      .pluck("addresses.#{metric}")
   end
 
   def top_3_shipping_states
-    top_shipping(:state, 3)
+    top_shipping('state', 3)
   end
 
   def top_3_shipping_cities
-    top_shipping(:city, 3)
+    top_shipping('city', 3)
   end
 
   def top_active_user

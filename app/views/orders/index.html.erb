@@ -23,12 +23,14 @@ Sorry there are no orders yet.
         <td>
           <%= link_to "Order #{order.id}", order_path(order) %><br/>
           Created <%= distance_of_time_in_words(order.created_at, Time.now) %> ago<br/>
-          Updated <%= distance_of_time_in_words(order.created_at, Time.now) %> ago
+          Updated <%= distance_of_time_in_words(order.created_at, Time.now) %> ago<br>
+          Ship to: <%= order.address.name %>
         </td>
         <% if current_admin? || current_user.merchant?%>
         <td><%= order.user.email %></td>
         <% end %>
         <td><%= order.status %></td>
+
         <td id="order-details-<%= order.id %>">
           <% order.order_items.each do |o_item| %>
             <%= o_item.item.name %>

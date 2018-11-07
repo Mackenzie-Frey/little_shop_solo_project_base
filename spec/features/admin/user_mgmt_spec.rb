@@ -1,18 +1,22 @@
 require 'rails_helper'
 
-RSpec.describe 'Admin-only user management' do 
+RSpec.describe 'Admin-only user management' do
   before(:each) do
     @admin = create(:admin)
     @active_user = create(:user)
+    @address = create(:address, user: @active_user)
     @inactive_user = create(:inactive_user)
+    @inactive_address = create(:address, user: @inactive_user)
     @active_merchant = create(:merchant)
+    @merchant_address = create(:address, user: @active_merchant)
+
   end
   it 'allows admin to disable an enabled user account' do
     visit login_path
     fill_in :email, with: @admin.email
     fill_in :password, with: @admin.password
     click_button 'Log in'
-  
+
     visit users_path
 
     within "#user-#{@active_user.id}" do
@@ -54,7 +58,7 @@ RSpec.describe 'Admin-only user management' do
     fill_in :email, with: @inactive_user.email
     fill_in :password, with: @inactive_user.password
     click_button 'Log in'
-    
+
     expect(current_path).to eq(profile_path)
   end
 
@@ -63,7 +67,7 @@ RSpec.describe 'Admin-only user management' do
     fill_in :email, with: @admin.email
     fill_in :password, with: @admin.password
     click_button 'Log in'
-  
+
     visit users_path
 
     within "#user-#{@active_user.id}" do
@@ -83,7 +87,7 @@ RSpec.describe 'Admin-only user management' do
     fill_in :email, with: @admin.email
     fill_in :password, with: @admin.password
     click_button 'Log in'
-  
+
     visit users_path
 
     within "#user-#{@active_merchant.id}" do

@@ -1,37 +1,40 @@
 require 'rails_helper'
 
-RSpec.describe 'Merchant Orders' do 
+RSpec.describe 'Merchant Orders' do
   before(:each) do
     @user = create(:user)
+    @address = create(:address, user: @user, active: true)
+    @user.default_address_id = @address.id
+
     @merchant = create(:merchant)
     @item_1, @item_2, @item_3, @item_4, @item_5 = create_list(:item, 5, user: @merchant)
-    
-    @order_1 = create(:order, user: @user)
+
+    @order_1 = create(:order, user: @user, address_id: @address.id)
     create(:order_item, order: @order_1, item: @item_1)
     create(:order_item, order: @order_1, item: @item_2)
 
-    @order_2 = create(:completed_order, user: @user)
+    @order_2 = create(:completed_order, user: @user, address_id: @address.id)
     create(:fulfilled_order_item, order: @order_2, item: @item_2)
     create(:fulfilled_order_item, order: @order_2, item: @item_3)
 
     @admin = create(:admin)
   end
 
-  context 'merchant user' do 
-    it 'sees a link to view dashboard orders if there are any orders' do 
+  context 'merchant user' do
+    it 'sees a link to view dashboard orders if there are any orders' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
-      visit dashboard_path 
- 
+      visit dashboard_path
+
       click_link("Merchant Orders")
-      
+
       expect(current_path).to eq(dashboard_orders_path)
     end
-    it 'does not see a link to view dashboard orders if there are no orders' do 
+    it 'does not see a link to view dashboard orders if there are no orders' do
       merchant_2 = create(:merchant)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant_2)
 
-      visit dashboard_path 
-      
+      visit dashboard_path
+
       expect(page).to_not have_link("Merchant Orders")
     end
     it 'can display orders containing items sold by that merchant' do
@@ -46,21 +49,21 @@ RSpec.describe 'Merchant Orders' do
       merchant_1, merchant_2 = create_list(:merchant, 2)
       item_1, item_2 = create_list(:item, 2, user: merchant_1)
       item_2.update(user: merchant_2)
-      order_1 = create(:order, user: @user)
+      order_1 = create(:order, user: @user, address_id: @address.id)
       oi_1 = create(:order_item, order: order_1, item: item_1)
       oi_2 = create(:order_item, order: order_1, item: item_2)
-  
+
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant_1)
       visit dashboard_orders_path
 
       click_on "Order #{order_1.id}"
       expect(current_path).to eq(order_path(order_1))
-
+    
       expect(page).to have_content(@user.name)
-      expect(page).to have_content(@user.address)
-      expect(page).to have_content(@user.city)
-      expect(page).to have_content(@user.state)
-      expect(page).to have_content(@user.zip)
+      expect(page).to have_content(@address.street_address)
+      expect(page).to have_content(@address.city)
+      expect(page).to have_content(@address.state)
+      expect(page).to have_content(@address.zip)
 
       expect(page).to_not have_content(item_2.name)
       old_inventory = item_1.inventory
@@ -78,10 +81,10 @@ RSpec.describe 'Merchant Orders' do
       expect(item_check.inventory).to_not eq(old_inventory)
       expect(old_inventory - item_check.inventory).to eq(oi_1.quantity)
     end
-    it 'blocks me from fulfilling an order if I do not have enough inventory' do 
+    it 'blocks me from fulfilling an order if I do not have enough inventory' do
       merchant_1 = create(:merchant)
       item_1, item_2 = create_list(:item, 2, user: merchant_1)
-      order_1 = create(:order, user: @user)
+      order_1 = create(:order, user: @user, address_id: @address.id)
       oi_1 = create(:order_item, quantity: 100, order: order_1, item: item_1)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant_1)
 
@@ -94,16 +97,16 @@ RSpec.describe 'Merchant Orders' do
   end
 
   context 'admin user' do
-    it 'sees a link to edit merchant profile data' do 
+    it 'sees a link to edit merchant profile data' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
-      visit merchant_path(@merchant) 
- 
+      visit merchant_path(@merchant)
+
       click_link "Edit Profile Data"
       expect(current_path).to eq(edit_user_path(@merchant))
     end
-    it 'sees a link to view dashboard orders if there are any orders' do 
+    it 'sees a link to view dashboard orders if there are any orders' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
-      visit merchant_path(@merchant) 
+      visit merchant_path(@merchant)
       click_link("Merchant Orders")
 
       expect(current_path).to eq(merchant_orders_path(@merchant))

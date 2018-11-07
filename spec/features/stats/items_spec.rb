@@ -4,6 +4,8 @@ RSpec.describe 'Item Stats' do
   context 'seeing stats when visiting /items' do
     before(:each) do
       @user = create(:user)
+      @address_1 = create(:address, user: @user)
+
       @merchants = create_list(:merchant, 10)
       @item_1 = create(:item, user: @merchants[0])
       @item_2 = create(:item, user: @merchants[1])

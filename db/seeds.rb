@@ -6,6 +6,7 @@ OrderItem.destroy_all
 Order.destroy_all
 Item.destroy_all
 User.destroy_all
+Address.destroy_all
 
 admin = create(:admin)
 user = create(:user)
@@ -14,8 +15,17 @@ user_2 = create(:user, active: false)
 user_3 = create(:user)
 user_4 = create(:user)
 
-
 merchant_2, merchant_3, merchant_4 = create_list(:merchant, 3)
+
+address_1 = create(:address, user: admin)
+address_2 = create(:address, user: user)
+address_3 = create(:address, user: merchant_1)
+address_4 = create(:address, user: user_2)
+address_5 = create(:address, user: user_3)
+address_6 = create(:address, user: user_4)
+address_7 = create(:address, user: merchant_2)
+address_8 = create(:address, user: merchant_3)
+address_9 = create(:address, user: merchant_4)
 
 item_1 = create(:item, user: merchant_1)
 item_2 = create(:item, user: merchant_2)

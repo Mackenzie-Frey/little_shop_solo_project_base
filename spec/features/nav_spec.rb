@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe 'Site Navigation' do 
+RSpec.describe 'Site Navigation' do
   context 'as a visitor' do
-    it 'all links work' do 
+    it 'all links work' do
       visit root_path
 
       click_link 'Home'
@@ -20,9 +20,12 @@ RSpec.describe 'Site Navigation' do
     end
   end
 
-  context 'as a registered user' do 
-    it 'all links work' do 
+  context 'as a registered user' do
+    it 'all links work' do
       user = create(:user)
+      address = create(:address, user: user)
+      user.default_address_id = address.id
+
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
 
       visit root_path
@@ -41,7 +44,7 @@ RSpec.describe 'Site Navigation' do
     end
   end
 
-  context 'as a merchant' do 
+  context 'as a merchant' do
     it 'all links work' do
       merchant = create(:merchant)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant)
@@ -53,7 +56,7 @@ RSpec.describe 'Site Navigation' do
     end
   end
 
-  context 'as an admin' do 
+  context 'as an admin' do
     it 'all links work' do
       admin = create(:admin)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(admin)
