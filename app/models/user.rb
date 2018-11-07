@@ -58,20 +58,21 @@ class User < ApplicationRecord
     items
       .joins(:orders)
       .joins('join users on orders.user_id=users.id')
+      .joins('join addresses on orders.address_id=addresses.id')
       .where("orders.status != ?", :cancelled)
       .where("order_items.fulfilled=?", true)
-      .order("count(users.#{metric}) desc")
-      .group("users.#{metric}")
+      .order("count(addresses.#{metric}) desc")
+      .group("addresses.#{metric}")
       .limit(quantity)
-      .pluck("users.#{metric}")
+      .pluck("addresses.#{metric}")
   end
 
   def top_3_shipping_states
-    top_shipping(:state, 3)
+    top_shipping('state', 3)
   end
 
   def top_3_shipping_cities
-    top_shipping(:city, 3)
+    top_shipping('city', 3)
   end
 
   def top_active_user
